@@ -65,12 +65,13 @@ public class EmpleadoController {
     @PutMapping("/empleados/{id}")
     public ResponseEntity<Empleados> editarEmpleado(@PathVariable Integer id, @RequestBody Empleados empleadoedit) {
         Empleados empleados = iEmpleadosService.buscarEmpleados(id);
-        if (empleados == null){
+        if (empleados == null)
             throw new EmpleadosException("El id no existe");
-        }
-        if(iEmpleadosService.listarEmpleados().stream().anyMatch(e -> e.getDpi() == empleados.getDpi())){
+        
+        if (iEmpleadosService.listarEmpleados().stream().anyMatch(e -> e.getDpi() == empleadoedit.getDpi() && e.getIdEmpleado() != id)) {
             throw new EmpleadosException("El Dpi ya existe");
         }
+        
         empleados.setDpi(empleadoedit.getDpi());
         empleados.setNombreCompleto(empleadoedit.getNombreCompleto());
         empleados.setPuesto(empleadoedit.getPuesto());
